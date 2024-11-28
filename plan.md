@@ -1,138 +1,129 @@
-## **Plan: Fire Hotspot Predictor Using Python**
+Here's the implementation of the Wildfire Sensor Logger in Python based on your outlined plan:
 
-### **1. Understand and Gather the Data**
-- **Data Collection**:
-  - Gather historical wildfire datasets (from sources like MODIS, NOAA, or local forestry databases).
-  - Include geographic locations (latitude, longitude), dates/times of fire occurrences, climate data (temperature, humidity, wind speed), vegetation types, and soil moisture.
+1. Setting up the Python Script
 
-- **Data Preprocessing**:
-  - Use Python libraries like `pandas` to load data from various formats (CSV, JSON, etc.).
-  - Clean data:
-    - Handle missing or inconsistent values using `fillna()` or `dropna()`.
-    - Normalize features using `sklearn.preprocessing.StandardScaler`.
-  - Parse timestamps into useful components like year, month, and day.
+File: sensor_logger.py
 
-### **2. Define Project Structure**
-- **Modules**:
-  1. **Data Input Module**: Reads and preprocesses the data.
-  2. **Feature Extraction Module**: Derives relevant features for prediction (e.g., average temperature, seasonal patterns).
-  3. **Prediction Algorithm Module**: Implements predictive logic using statistical models or machine learning.
-  4. **Output Module**: Displays predictions and saves results.
+import os
+import csv
+import random
+from datetime import datetime
+import time
 
----
+# Function to simulate sensor data
+def generate_sensor_data():
+    """
+    Simulates sensor readings for temperature, humidity, and smoke level.
+    Returns a dictionary with sensor data and timestamp.
+    """
+    data = {
+        'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'temperature': round(random.uniform(20, 50), 2),  # in Celsius
+        'humidity': round(random.uniform(10, 90), 2),     # in percentage
+        'smoke_level': round(random.uniform(0, 100), 2)   # arbitrary scale
+    }
+    return data
 
-### **3. Preprocessing and Feature Extraction**
-- **Feature Engineering**:
-  - Calculate averages or trends in climate data.
-  - Encode categorical variables like vegetation types using `OneHotEncoder`.
-  - Derive new features such as heat indices or drought indices.
-  
-- **Organizing Data**:
-  - Combine climate and fire occurrence data into a structured `pandas.DataFrame`.
-  - Ensure the data has input features (`X`) and target variables (`y`), such as fire occurrence (binary 0/1).
+# Function to log data into a CSV file
+def log_sensor_data(filename='data/wildfire_sensors.csv'):
+    """
+    Logs generated sensor data into a CSV file.
+    Creates the file and writes headers if it doesn't exist.
+    """
+    os.makedirs(os.path.dirname(filename), exist_ok=True)  # Ensure data directory exists
+    data = generate_sensor_data()
 
----
+    try:
+        # Write data to CSV
+        file_exists = os.path.isfile(filename)
+        with open(filename, 'a', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=data.keys())
+            if not file_exists:  # Write header if file is new
+                writer.writeheader()
+            writer.writerow(data)
+        print(f"Logged data: {data}")
+    except Exception as e:
+        print(f"Error logging data: {e}")
 
-### **4. Implementing Prediction Logic**
-- Use Python's `scikit-learn` for model implementation.
-  - **Custom Statistical Analysis**:
-    - Apply regression or correlation techniques to identify key factors influencing fire risk.
-  - **Machine Learning**:
-    - Start with logistic regression or decision trees for binary classification.
-    - Use random forests or gradient boosting for better performance.
-  - **Algorithm Choice**:
-    - Decision trees or random forests can model complex patterns in data.
-    - Clustering algorithms like k-means can identify fire-prone regions.
+# Main function to simulate periodic logging
+def start_logging(log_interval=5):
+    """
+    Starts the logging process with a specified interval (in seconds).
+    """
+    print("Starting Wildfire Sensor Logger...")
+    print(f"Logging every {log_interval} seconds. Press Ctrl+C to stop.")
+    try:
+        while True:
+            log_sensor_data()
+            time.sleep(log_interval)
+    except KeyboardInterrupt:
+        print("\nLogging stopped. Goodbye!")
 
----
+if __name__ == "__main__":
+    # Configure log interval here (default 5 seconds)
+    start_logging(log_interval=5)
 
-### **5. Code Structure**
-#### Example Code in Python:
-
-**Data Preprocessing:**
-```python
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-
-# Load data
-data = pd.read_csv('wildfire_data.csv')
-
-# Preprocess data
-data.fillna(data.mean(), inplace=True)  # Handle missing values
-data['month'] = pd.to_datetime(data['date']).dt.month  # Extract month from date
-
-# Features and target
-features = ['temperature', 'humidity', 'wind_speed', 'month']
-X = data[features]
-y = data['fire_occurred']  # Binary target variable
-
-# Normalize features
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
-
-# Train-test split
-X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.3, random_state=42)
-```
-
-**Prediction Model:**
-```python
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, classification_report
-
-# Train model
-model = RandomForestClassifier(random_state=42)
-model.fit(X_train, y_train)
-
-# Predict
-y_pred = model.predict(X_test)
-
-# Evaluate
-print("Accuracy:", accuracy_score(y_test, y_pred))
-print("Classification Report:\n", classification_report(y_test, y_pred))
-```
 
 ---
 
-### **6. Testing and Validation**
-- Split data into training, validation, and testing sets.
-- Use metrics like accuracy, precision, recall, and F1-score to evaluate model performance.
-- Perform cross-validation to ensure robustness.
+2. Project Directory Setup
+
+Create the following structure:
+
+wildfire-sensor-logger/
+│
+├── sensor_logger.py         # Main script
+├── README.md                # Documentation
+├── data/                    # Directory for storing logged CSV files
+└── requirements.txt         # (Empty for now, or specify dependencies if needed)
+
 
 ---
 
-### **7. Output Results**
-- Save predictions to a CSV file using `pandas`.
-- Visualize predictions on a map:
-  - Use libraries like `matplotlib` or `folium` for geographic plotting.
-```python
-import folium
+3. Usage
 
-# Create map
-map = folium.Map(location=[37.7749, -122.4194], zoom_start=6)
+1. Run the Script:
 
-# Add fire predictions
-for _, row in data.iterrows():
-    if row['fire_occurred']:
-        folium.CircleMarker([row['latitude'], row['longitude']],
-                            radius=5, color='red').add_to(map)
+python sensor_logger.py
 
-map.save('fire_predictions.html')
-```
 
----
+2. Output Example:
 
-### **8. Documentation and Comments**
-- Write clear docstrings for each function.
-- Comment critical sections of code to explain logic.
+Starting Wildfire Sensor Logger...
+Logging every 5 seconds. Press Ctrl+C to stop.
+Logged data: {'timestamp': '2024-11-28 12:34:56', 'temperature': 35.21, 'humidity': 48.65, 'smoke_level': 23.18}
+Logged data: {'timestamp': '2024-11-28 12:35:01', 'temperature': 40.12, 'humidity': 30.45, 'smoke_level': 12.09}
+
+
+3. Check the data/wildfire_sensors.csv file for the logged data.
+
+
+
 
 ---
 
-### **Further Enhancements**
-1. **Visualization**:
-   - Integrate GIS libraries like `geopandas` for advanced mapping.
-2. **Deep Learning**:
-   - Use `TensorFlow` or `PyTorch` for neural network models on large datasets.
-3. **Real-Time Prediction**:
-   - Fetch live weather data using APIs like OpenWeatherMap and integrate predictions.
+4. Enhancements and Features
+
+Logging Configuration: Add the ability to configure logging intervals or customize file paths.
+
+Error Handling: Ensure robust handling for potential file or permission errors.
+
+Future Extensions:
+
+Real sensor integration using libraries like Adafruit for IoT sensors.
+
+Data visualization using tools like matplotlib or pandas.
+
+
+
+
+---
+
+Example Logged Data in CSV
+
+timestamp,temperature,humidity,smoke_level
+2024-11-28 12:34:56,35.21,48.65,23.18
+2024-11-28 12:35:01,40.12,30.45,12.09
+
+This implementation sets a foundation for a wildfire monitoring tool while being simple enough to extend further. Let me know if you want to add more features!
 
