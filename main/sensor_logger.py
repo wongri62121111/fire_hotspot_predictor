@@ -44,7 +44,7 @@ def log_sensor_data(filename='data/wildfire_sensors.csv'):
 
 
 class SensorLogger:
-    def __init__(self, log_interval=5, log_file='data/wildfire_sensors.csv'):
+    def __init__(self, log_interval=5, log_file='main/data/wildfire_sensors.csv'):
         """
         Initialize the Sensor Logger.
 
