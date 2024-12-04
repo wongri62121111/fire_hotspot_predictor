@@ -2,35 +2,39 @@
 
 ## Project Overview
 
-The Wildfire Sensor Logger is a Python project designed to simulate and log sensor data related to wildfire detection. This project generates mock sensor readings for temperature, humidity, and smoke levels, providing a foundational tool for understanding environmental monitoring in wildfire-prone areas.
+The Wildfire Sensor Logger is a Python project designed to simulate and log sensor data related to wildfire detection. It includes a web-based dashboard that displays sensor data and highlights anomalies. The project generates mock sensor readings for temperature, humidity, and smoke levels, and provides an accessible framework for monitoring environmental data.
 
 ## Project Goals
 
-- Simulate realistic sensor data for wildfire monitoring
-- Create a robust logging mechanism for sensor readings
-- Provide a simple, extensible framework for environmental data collection
+- Simulate realistic sensor data for wildfire monitoring.
+- Create a robust logging mechanism for sensor readings.
+- Provide a web application to display sensor data and anomalies.
+- Highlight anomalous readings with explanations on the dashboard.
 
 ## Prerequisites
 
 - Python 3.8+
-- Basic understanding of Python programming
-- Recommended: Virtual environment setup
+- Basic understanding of Python programming.
+- Recommended: Virtual environment setup.
 
 ## Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/yourusername/wildfire-sensor-logger.git
    cd wildfire-sensor-logger
    ```
 
 2. Create a virtual environment:
+
    ```bash
    python -m venv venv
    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
    ```
 
-3. Install dependencies (if any are added later):
+3. Install dependencies:
+
    ```bash
    pip install -r requirements.txt
    ```
@@ -40,149 +44,126 @@ The Wildfire Sensor Logger is a Python project designed to simulate and log sens
 ```
 wildfire-sensor-logger/
 │
-├── sensor_logger.py         # Main script for data generation and logging
-├── README.md                # Project documentation
-├── data/                    # Directory for storing logged CSV files
-└── requirements.txt         # Project dependencies
+├── modules/                     # Core functionality modules
+│   ├── sensor_logger.py         # Script for data generation and logging
+│   ├── irregularity_detector.py # Script to detect anomalies
+│   ├── notification_alert.py    # Script for email/SMS alerts
+│
+├── app/                         # Web application
+│   ├── templates/               # HTML templates for the dashboard
+│   │   └── index.html
+│   ├── static/                  # Static files like CSS and JS
+│   │   └── style.css
+│   └── app.py                   # Flask application entry point
+│
+├── data/                        # Directory for storing logged CSV files
+│   └── wildfire_sensors.csv
+│
+├── README.md                    # Project documentation
+├── requirements.txt             # Python dependencies
+└── setup.py                     # Script to automate installation
 ```
 
-## Detailed Project Milestones and Implementation Guide
+## Web Dashboard Features
 
-### Milestone 1: Project Setup and Basic Data Generation (Day 1)
-**Objectives:**
-- Set up Python development environment
-- Create initial project structure
-- Implement basic sensor data generation function
+- **Displays Sensor Data**:
 
-**Step-by-Step Implementation:**
-1. Create project directory
-2. Set up virtual environment
-3. Create `sensor_logger.py`
-4. Implement `generate_sensor_data()` function
-5. Add basic error handling
-6. Test data generation
+  - Presents logged temperature, humidity, and smoke levels in a table.
 
-**Code Checkpoint:**
-```python
-def generate_sensor_data():
-    # Ensure random data generation works correctly
-    data = {
-        'timestamp': datetime.now(),
-        'temperature': round(random.uniform(20, 50), 2),
-        'humidity': round(random.uniform(10, 90), 2),
-        'smoke_level': round(random.uniform(0, 100), 2)
-    }
-    print("Data generation test:", data)
-```
+- **Highlights Anomalies**:
 
-### Milestone 2: CSV Logging Mechanism (Days 2-3)
-**Objectives:**
-- Implement robust CSV logging
-- Handle file creation and appending
-- Add data validation
+  - Anomalous readings are highlighted directly in the table.
+  - Includes a detailed explanation for each anomaly.
 
-**Step-by-Step Implementation:**
-1. Create `log_sensor_data()` function
-2. Implement file handling with `csv` module
-3. Add error handling for file operations
-4. Create `data/` directory for logs
-5. Implement logging with timestamps
+- **Human-Readable Anomaly Explanations**:
 
-**Code Checkpoint:**
-```python
-def log_sensor_data(filename='data/wildfire_sensors.csv'):
-    # Ensure proper file handling and logging
-    os.makedirs('data', exist_ok=True)
-    data = generate_sensor_data()
-    
-    # Implement file logging with comprehensive error handling
-    try:
-        with open(filename, 'a', newline='') as file:
-            writer = csv.DictWriter(file, fieldnames=data.keys())
-            writer.writerow(data)
-    except PermissionError:
-        print("Error: Cannot write to file. Check permissions.")
-    except Exception as e:
-        print(f"Unexpected error occurred: {e}")
-```
+  - Lists anomalies and reasons (e.g., "Temperature exceeds the maximum threshold of 45°C").
 
-### Milestone 3: Enhanced Functionality (Day 4)
-**Objectives:**
-- Add configuration options
-- Implement logging intervals
-- Create basic data validation
+## Setup Instructions
 
-**Potential Enhancements:**
-- Add configurable sensor ranges
-- Implement logging frequency control
-- Add basic data validation checks
+1. Run the setup script to install dependencies and set up the project structure:
 
-**Code Checkpoint:**
-```python
-class SensorLogger:
-    def __init__(self, 
-                 log_interval=5,  # minutes
-                 data_dir='data',
-                 max_log_files=10):
-        self.log_interval = log_interval
-        self.data_dir = data_dir
-        self.max_log_files = max_log_files
-```
+   ```bash
+   python setup.py
+   ```
 
-### Milestone 4: Testing and Documentation (Days 5-7)
-**Objectives:**
-- Write unit tests
-- Create comprehensive documentation
-- Prepare for potential extensions
+2. Start the Flask web application:
 
-**Tasks:**
-1. Write unit tests for data generation
-2. Create docstrings for all functions
-3. Add logging configuration options
-4. Prepare README with usage instructions
-5. Consider potential future improvements
+   ```bash
+   python app/app.py
+   ```
+
+3. Open the dashboard in a browser:
+
+   ```
+   http://127.0.0.1:5000
+   ```
+
+## Requirements
+
+The project uses the following Python libraries:
+
+- `flask`: For the web application.
+- `twilio`: For SMS notifications.
+- `csv`: For handling sensor data files.
+- `smtplib`: For email notifications.
 
 ## Usage
 
-Run the script directly:
+### 1. Logging Sensor Data
+
+Run the logger script to generate and log sensor data:
+
 ```bash
-python sensor_logger.py
+python modules/sensor_logger.py
+```
+
+The data will be stored in `data/wildfire_sensors.csv`.
+
+### 2. View Sensor Data and Anomalies
+
+Start the web app and navigate to the dashboard to view data and anomalies:
+
+```bash
+python app/app.py
+```
+
+### 3. Customize Thresholds
+
+Thresholds for anomalies can be adjusted in `app.py`:
+
+```python
+THRESHOLDS = {
+    "temperature": (20, 45),
+    "humidity": (15, 85),
+    "smoke_level": (0, 70),
+}
 ```
 
 ## Future Improvements
-- Add real sensor integration
-- Implement advanced data validation
-- Create data visualization tools
-- Support multiple sensor types
+
+- Add real sensor integration.
+- Enable real-time data visualization.
+- Implement user authentication for restricted access.
+- Add support for exporting data to other formats (e.g., JSON, Excel).
 
 ## Contributing
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a new Pull Request
+
+1. Fork the repository.
+2. Create your feature branch.
+3. Commit your changes.
+4. Push to the branch.
+5. Create a new Pull Request.
 
 ## License
+
 [Choose an appropriate open-source license]
 
 ## Contact
+
 [Your contact information]
-```
 
-## Learning Outcomes
+Richard Wong @ Penn State University
 
-By completing this project, you will gain experience in:
-- Python programming
-- File I/O operations
-- CSV handling
-- Basic data simulation
-- Project structure and documentation
-- Error handling
-- Configuration management
+Abdallah Salem @ Penn State University
 
-## Troubleshooting
-
-- Ensure Python 3.8+ is installed
-- Check file permissions when logging data
-- Verify virtual environment activation
-- Consult Python documentation for any module-specific issues
