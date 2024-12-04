@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wildfire Sensor Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Wildfire Sensor Dashboard</h1>
+
+    <h2>Sensor Data</h2>
+    {% if data %}
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Temperature</th>
+                <th>Humidity</th>
+                <th>Smoke Level</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                <td>{{ row.timestamp }}</td>
+                <td class="{% if anomalies|selectattr('timestamp', 'equalto', row.timestamp)|map(attribute='temperature')|list %}anomaly{% endif %}">
+                    {{ row.temperature }}
+                </td>
+                <td class="{% if anomalies|selectattr('timestamp', 'equalto', row.timestamp)|map(attribute='humidity')|list %}anomaly{% endif %}">
+                    {{ row.humidity }}
+                </td>
+                <td class="{% if anomalies|selectattr('timestamp', 'equalto', row.timestamp)|map(attribute='smoke_level')|list %}anomaly{% endif %}">
+                    {{ row.smoke_level }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No sensor data available.</p>
+    {% endif %}
+
+    <h2>Anomalies</h2>
+    {% if anomalies %}
+    <ul>
+        {% for anomaly in anomalies %}
+        <li>
+            <strong>{{ anomaly.timestamp }}</strong>: {{ anomaly.explanation }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No anomalies detected.</p>
+    {% endif %}
+</body>
+</html>
