@@ -1,6 +1,7 @@
 import smtplib
 from email.mime.text import MIMEText
 from twilio.rest import Client
+import smtplib
 
 # Email configuration
 EMAIL_SENDER = "your_email@example.com"

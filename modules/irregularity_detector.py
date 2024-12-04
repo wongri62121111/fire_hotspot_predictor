@@ -1,6 +1,7 @@
 import os
 import csv
 from modules.notification_alert import send_email_alert, send_sms_alert
+import smtplib
 
 
 def detect_irregularities(file_path='main/data/wildfire_sensors.csv'):

@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify
 import csv
 import os
+import smtplib
 
 app = Flask(__name__)
 
@@ -92,6 +93,8 @@ def api_anomalies():
     data = load_data()
     anomalies = detect_anomalies(data)
     return jsonify(anomalies)
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
