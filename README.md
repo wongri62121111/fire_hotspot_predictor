@@ -107,6 +107,8 @@ The wildfire monitoring system successfully meets its core objectives as demonst
 - Color-coded metrics for quick assessment
 - 50-point rolling window maintains readability
 
+# Functionalities and Test Results:
+*see images at top of README*
 
 ## Technical Limitations
 - Mock sensor data may not accurately represent real sensor behavior
