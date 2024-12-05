@@ -88,6 +88,40 @@ thresholds = {
     'smoke_level': (0, 70)
 }
 ```
+# Achievement of Project Goals
+
+The wildfire monitoring system successfully meets its core objectives as demonstrated in the implementations shown above in the pictures at the top of the README.
+
+1. **Real-time Data Collection**
+- Live sensor data collection runs at 5-second intervals
+- Dashboard shows current temperature, humidity, and smoke readings 
+- History table maintains rolling log of readings 
+
+2. **Anomaly Detection**
+- System flags outliers based on predefined thresholds
+- Real-time alerts visible in dashboard 
+- Detection runs concurrently with data collection
+
+3. **Data Visualization**
+- Live matplotlib graphs show sensor trends 
+- Color-coded metrics for quick assessment
+- 50-point rolling window maintains readability
+
+
+## Technical Limitations
+- Mock sensor data may not accurately represent real sensor behavior
+- Fixed thresholds don't account for regional climate variations
+- Limited data persistence and historical analysis
+- No remote monitoring capabilities
+- Single-node architecture limits coverage area
+
+## Implementation Challenges
+- Threading synchronization between visualization and data collection
+- Real-time data visualization performance
+- Error handling for sensor data interruptions
+- Web interface and matplotlib integration complexities
+
+
 
 ## Contribution
 1.Abdallah Salem
