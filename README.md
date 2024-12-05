@@ -11,7 +11,11 @@ A real-time monitoring system that collects and visualizes environmental data fo
 - Anomaly detection with configurable thresholds
 - Two visualization options:
   - Matplotlib-based real-time graphs
+    ![image](https://github.com/user-attachments/assets/d2484465-de67-4dd8-8fda-c1205b1e7d56)
+
   - Web interface with live updates
+    ![image](https://github.com/user-attachments/assets/bb43ed08-741a-4d9f-8dc9-8d9eb3d6471d)
+
 
 ## Prerequisites
 
