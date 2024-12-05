@@ -1,169 +1,91 @@
-# Wildfire Sensor Logger
+# Wildfire Monitoring System
 
-## Project Overview
+## Overview
 
-The Wildfire Sensor Logger is a Python project designed to simulate and log sensor data related to wildfire detection. It includes a web-based dashboard that displays sensor data and highlights anomalies. The project generates mock sensor readings for temperature, humidity, and smoke levels, and provides an accessible framework for monitoring environmental data.
+A real-time monitoring system that collects and visualizes environmental data for wildfire detection, featuring sensor simulation, data logging, anomaly detection, and both matplotlib and web-based visualization interfaces.
 
-## Project Goals
+## Features
 
-- Simulate realistic sensor data for wildfire monitoring.
-- Create a robust logging mechanism for sensor readings.
-- Provide a web application to display sensor data and anomalies.
-- Highlight anomalous readings with explanations on the dashboard.
+- Real-time sensor data simulation (temperature, humidity, smoke levels)
+- Automated data logging to CSV
+- Anomaly detection with configurable thresholds
+- Two visualization options:
+  - Matplotlib-based real-time graphs
+  - Web interface with live updates
 
 ## Prerequisites
 
 - Python 3.8+
-- Basic understanding of Python programming.
-- Recommended: Virtual environment setup.
+- pip
 
 ## Installation
 
-1. Clone the repository:
+```bash
+git clone https://github.com/wongri62121111/wildfire-sensor-logger.git
+cd wildfire-sensor-logger
+pip install -r requirements.txt
+```
 
-   ```bash
-   git clone https://github.com/yourusername/wildfire-sensor-logger.git
-   cd wildfire-sensor-logger
-   ```
+## Usage
 
-2. Create a virtual environment:
+### Start with Matplotlib Visualization
+```bash
+python main-matplot.py
+```
 
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
-   ```
+### Start with Web Interface
+```bash
+python main-webpage.py
+```
 
-3. Install dependencies:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
+Optional arguments:
+- `--interval`: Logging interval in seconds (default: 5)
+- `--data-file`: Custom data file path
 
 ## Project Structure
 
 ```
-wildfire-sensor-logger/
-│
-├── modules/                     # Core functionality modules
-│   ├── sensor_logger.py         # Script for data generation and logging
-│   ├── irregularity_detector.py # Script to detect anomalies
-│   ├── notification_alert.py    # Script for email/SMS alerts
-│
-├── app/                         # Web application
-│   ├── templates/               # HTML templates for the dashboard
-│   │   └── index.html
-│   ├── static/                  # Static files like CSS and JS
-│   │   └── style.css
-│   └── app.py                   # Flask application entry point
-│
-├── data/                        # Directory for storing logged CSV files
-│   └── wildfire_sensors.csv
-│
-├── README.md                    # Project documentation
-├── requirements.txt             # Python dependencies
-└── setup.py                     # Script to automate installation
+data/                          # Sensor data 
+└── wildfire_sensors.csv
+main/
+├── irregularity_detector.py   # Anomaly detection logic
+├── sensor_logger.py           # Sensor data generation and logging
+├── sensor_visualize.py        # Matplotlib visualization
+├── main-matplot.py            # Matplotlib interface launcher
+├── main-webpage.py            # Web interface launcher
+├── templates/                 # Web interface templates
+        └── index.html
 ```
 
-## Web Dashboard Features
+## Component Details
 
-- **Displays Sensor Data**:
+### Sensor Logger
+- Generates mock sensor data
+- Configurable logging intervals
+- CSV storage with timestamps
 
-  - Presents logged temperature, humidity, and smoke levels in a table.
+### Irregularity Detector
+Default thresholds:
+- Temperature: 20-45°C
+- Humidity: 15-85%
+- Smoke Level: 0-70
 
-- **Highlights Anomalies**:
+### Visualizations
+- Matplotlib: Real-time line graphs
+- Web Interface: Live dashboard with current readings and alerts
 
-  - Anomalous readings are highlighted directly in the table.
-  - Includes a detailed explanation for each anomaly.
+## Configuration
 
-- **Human-Readable Anomaly Explanations**:
-
-  - Lists anomalies and reasons (e.g., "Temperature exceeds the maximum threshold of 45°C").
-
-## Setup Instructions
-
-1. Run the setup script to install dependencies and set up the project structure:
-
-   ```bash
-   python setup.py
-   ```
-
-2. Start the Flask web application:
-
-   ```bash
-   python app/app.py
-   ```
-
-3. Open the dashboard in a browser:
-
-   ```
-   http://127.0.0.1:5000
-   ```
-
-## Requirements
-
-The project uses the following Python libraries:
-
-- `flask`: For the web application.
-- `twilio`: For SMS notifications.
-- `csv`: For handling sensor data files.
-- `smtplib`: For email notifications.
-
-## Usage
-
-### 1. Logging Sensor Data
-
-Run the logger script to generate and log sensor data:
-
-```bash
-python modules/sensor_logger.py
-```
-
-The data will be stored in `data/wildfire_sensors.csv`.
-
-### 2. View Sensor Data and Anomalies
-
-Start the web app and navigate to the dashboard to view data and anomalies:
-
-```bash
-python app/app.py
-```
-
-### 3. Customize Thresholds
-
-Thresholds for anomalies can be adjusted in `app.py`:
-
+Modify thresholds in `irregularity_detector.py`:
 ```python
-THRESHOLDS = {
-    "temperature": (20, 45),
-    "humidity": (15, 85),
-    "smoke_level": (0, 70),
+thresholds = {
+    'temperature': (20, 45),
+    'humidity': (15, 85),
+    'smoke_level': (0, 70)
 }
 ```
 
-## Future Improvements
-
-- Add real sensor integration.
-- Enable real-time data visualization.
-- Implement user authentication for restricted access.
-- Add support for exporting data to other formats (e.g., JSON, Excel).
-
-## Contributing
-
-1. Fork the repository.
-2. Create your feature branch.
-3. Commit your changes.
-4. Push to the branch.
-5. Create a new Pull Request.
-
-## License
-
-[Choose an appropriate open-source license]
-
-## Contact
-
-[Your contact information]
-
-Richard Wong @ Penn State University
-
-Abdallah Salem @ Penn State University
+## Contribution
+1.Abdallah Salem
+2.Richard Wong
 

@@ -1,7 +1,5 @@
 import os
 import csv
-from modules.notification_alert import send_email_alert, send_sms_alert
-import smtplib
 
 
 def detect_irregularities(file_path='main/data/wildfire_sensors.csv'):
@@ -43,10 +41,9 @@ def detect_irregularities(file_path='main/data/wildfire_sensors.csv'):
         return
 
     if irregularities:
+        print("\nIrregularities detected:")
         for irregularity in irregularities:
-            details = f"At {irregularity['timestamp']}: {irregularity}"
-            send_email_alert(details)
-            send_sms_alert(details)
+            print(irregularity)
     else:
         print("\nNo irregularities detected.")
 

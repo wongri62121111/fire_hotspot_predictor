@@ -3,7 +3,6 @@ import csv
 import random
 from datetime import datetime
 import time
-import smtplib
 
 
 def generate_sensor_data():
