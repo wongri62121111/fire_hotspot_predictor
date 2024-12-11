@@ -74,6 +74,9 @@ Default thresholds:
 - Temperature: 20-45°C
 - Humidity: 15-85%
 - Smoke Level: 0-70
+- Windspeed: 0-50 m/s
+- Precipitation: 0-10 mm/h
+- Soil Moisture: 10-60%
 
 ### Visualizations
 - Matplotlib: Real-time line graphs
@@ -86,7 +89,10 @@ Modify thresholds in `irregularity_detector.py`:
 thresholds = {
     'temperature': (20, 45),
     'humidity': (15, 85),
-    'smoke_level': (0, 70)
+    'smoke_level': (0, 70),
+    'windspeed': (0, 50),    
+    'precipitation': (0, 10),
+    'soil_moisture': (10, 60)
 }
 ```
 # Achievement of Project Goals
