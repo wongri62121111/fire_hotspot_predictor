@@ -13,11 +13,15 @@ def detect_irregularities(file_path='main/data/wildfire_sensors.csv'):
         print(f"Error: File {file_path} does not exist.")
         return
 
+    
     # Define thresholds for irregularities
     thresholds = {
-        'temperature': (20, 45),  # Example: normal range is 20-45°C
-        'humidity': (15, 85),    # Example: normal range is 15-85%
-        'smoke_level': (0, 70),  # Example: normal range is 0-70 (arbitrary scale)
+        'temperature': (20, 45),       # °C         # Example: normal range is 20-45°C
+        'humidity': (15, 85),          # %          # Example: normal range is 15-85%
+        'smoke_level': (0, 70),        # Arbitrary scale    # Example: normal range is 0-70 (arbitrary scale)
+        'windspeed': (0, 50),          # m/s
+        'precipitation': (0, 10),      # mm/h
+        'soil_moisture': (10, 60)      # %
     }
 
     irregularities = []

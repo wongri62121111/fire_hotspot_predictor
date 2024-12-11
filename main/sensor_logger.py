@@ -7,7 +7,7 @@ import time
 
 def generate_sensor_data():
     """
-    Generate mock sensor data for temperature, humidity, and smoke levels.
+    Generate mock sensor data for temperature, humidity, smoke levels, windspeed, and other conditions.
     Returns:
         dict: A dictionary containing sensor data with a timestamp.
     """
@@ -16,6 +16,9 @@ def generate_sensor_data():
         'temperature': round(random.uniform(20, 50), 2),
         'humidity': round(random.uniform(10, 90), 2),
         'smoke_level': round(random.uniform(0, 100), 2),
+        'windspeed': round(random.uniform(0, 50), 2),
+        'precipitation': round(random.uniform(0, 10), 2),
+        'soil_moisture': round(random.uniform(10, 70), 2)
     }
 
 

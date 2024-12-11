@@ -82,6 +82,21 @@
             <div id="smoke_level" class="value">--</div>
             <div>units</div>
         </div>
+        <div class="metric">
+            <h3>Windspeed</h3>
+            <div id="windspeed" class="value">--</div>
+            <div>m/s</div>
+        </div>
+        <div class="metric">
+            <h3>Precipitation</h3>
+            <div id="precipitation" class="value">--</div>
+            <div>mm/h</div>
+        </div>
+        <div class="metric">
+            <h3>Soil Moisture</h3>
+            <div id="soil_moisture" class="value">--</div>
+            <div>%</div>
+        </div>
     </div>
 
     <div class="data-section">
@@ -98,6 +113,9 @@
                     <th>Temperature (°C)</th>
                     <th>Humidity (%)</th>
                     <th>Smoke Level</th>
+                    <th>Windspeed (m/s)</th>
+                    <th>Precipitation (mm/h)</th>
+                    <th>Soil Moisture (%)</th>
                 </tr>
             </thead>
             <tbody id="history-data">
@@ -115,6 +133,9 @@
                     document.getElementById('temperature').textContent = sensorData.temperature.toFixed(1);
                     document.getElementById('humidity').textContent = sensorData.humidity.toFixed(1);
                     document.getElementById('smoke_level').textContent = sensorData.smoke_level.toFixed(1);
+                    document.getElementById('windspeed').textContent = sensorData.windspeed.toFixed(1);
+                    document.getElementById('precipitation').textContent = sensorData.precipitation.toFixed(1);
+                    document.getElementById('soil_moisture').textContent = sensorData.soil_moisture.toFixed(1);
 
                     // Update irregularities
                     const irregularitiesDiv = document.getElementById('irregularities');
@@ -131,11 +152,21 @@
                     historyTable.innerHTML = '';
                     data.history.forEach(record => {
                         const row = document.createElement('tr');
+                        
+                        // Highlight row if any parameter is irregular
+                        const isIrregular = data.irregularities.some(irr => irr.timestamp === record.timestamp);
+                        if (isIrregular) {
+                            row.style.backgroundColor = '#ffeeba'; // Highlight color for irregularities
+                        }
+                        
                         row.innerHTML = `
                             <td>${record.timestamp}</td>
                             <td>${record.temperature.toFixed(1)}</td>
                             <td>${record.humidity.toFixed(1)}</td>
                             <td>${record.smoke_level.toFixed(1)}</td>
+                            <td>${record.windspeed.toFixed(1)}</td>
+                            <td>${record.precipitation.toFixed(1)}</td>
+                            <td>${record.soil_moisture.toFixed(1)}</td>
                         `;
                         historyTable.appendChild(row);
                     });
